@@ -1,0 +1,105 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f8bfc0;
+}
+
+#cryptoData {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #c84c4c;
+    color: #ffffff;
+}
+
+tr:nth-child(even) {
+    background-color: #faa0a0;
+}
+
+#ticker {
+    position: fixed;  
+    bottom: 0;  
+    left: 0;     
+    width: 100%;      
+}
+
+#searchInput {
+  border: none;
+  padding: 5px 10px;
+}
+
+
+#buttonbackto {
+  background-color: #ada8f3; 
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+#buttonbackto:hover {
+  background-color: #2c3ad7;
+}
+
+#addButton {
+  background-color: #ada8f3; 
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+#addButton:hover {
+  background-color: #2c3ad7;
+}
+
+#buttonmarketdata {
+  background-color: #ada8f3; 
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+#buttonmarketdata:hover {
+  background-color: #2c3ad7;
+}
+
+#buttonDelete {
+  background-color: #ff6666;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+#buttonDelete:hover {
+  background-color: #ff3333;
+}
+
+#addButton {
+  background-color: #ada8f3; 
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+#addButton:hover {
+  background-color: #2c3ad7;
+}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watchlist</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Watchlist</h1>
+    <div id="watchlistData"></div>
+    <button onclick="window.location.href='index.html'">Back to Dashboard</button>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Symbol</th>
+                <th>Price (IDR)</th>
+                <th>Change 1h (%)</th>
+                <th>Change 2h (%)</th>
+                <th>Change 1d (%)</th>
+                <th>Actions</th> <!-- Header for delete button column -->
+            </tr>
+        </thead>
+        <tbody id="portfolioTableBody">
+            <!-- Portfolio items will be added here dynamically -->
+        </tbody>
+    </table>
+    <script src="watchlist.js"></script>
+</body>
+</html>

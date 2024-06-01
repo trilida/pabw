@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cryptocurrency Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Manage Your Cryptocurrency Portfolio</h1>
+    <div class="form-container">
+        <form id="portfolioForm">
+            <input type="text" id="coinNameInput" placeholder="Enter Coin Name or Symbol" required>
+            <input type="number" id="coinAmountInput" placeholder="Amount Owned" required min="0">
+            <button type="button" onclick="addCoin()">Add to Portfolio</button>
+        </form>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Name</th>
+                <th>Symbol</th>
+                <th>Price (IDR)</th>
+                <th>Amount Owned</th>
+                <th>Total Value (IDR)</th>
+                <th>Market Cap (IDR)</th>
+                <th>Change 1h (%)</th>
+                <th>Change 24h (%)</th>
+                <th>Change 7d (%)</th>
+                <th>Actions</th> <!-- Header for delete button column -->
+            </tr>
+        </thead>
+        <tbody id="portfolioTableBody">
+            <!-- Portfolio items will be added here dynamically -->
+        </tbody>
+    </table>
+    <div class="total-value-display">
+        <h3>Total Portfolio Value:</h3>
+        <p id="totalAmountIDR">Rp 0</p>
+    </div>
+     <button onclick="window.location.href='monitor.html'">Monitor Portfolio</button>
+    <script src="portofolio.js"></script>
+</body>
+</html>

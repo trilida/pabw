@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryptocurrency Market Data</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Cryptocurrency Market Data</h1>
+    <div id="addContainer">
+        <input type="text" id="searchInput" placeholder="Type to search by name or symbol..." />
+        <button id="goToWatchlistButton" onclick="goToWatchlist()">Go to Watchlist</button>
+        <button onclick="window.location.href='portofolio.html'">Go to Portfolio</button>
+    </div>
+    <div id="cryptoData">Loading cryptocurrency data...</div>
+    
+    <div class="tradingview-widget-container" id="ticker">
+        <div class="tradingview-widget-container__widget_ticker"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

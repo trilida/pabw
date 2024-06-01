@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Coin</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1 id="coinName">Coin Name</h1>
+    <div id="coinSymbol">Symbol: XYZ</div>
+    <div id="priceChart" class="chart-container"></div>
+    <div id="coinNews">Latest News</div>
+    
+    <script src="detailcoin.js"></script>
+    <script>
+        function loadCoinDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const symbol = urlParams.get('symbol');
+            const name = urlParams.get('name');
+            document.getElementById('coinName').innerText = name;
+            document.getElementById('coinSymbol').innerText = 'Symbol: ' + symbol;
+            fetchCoinDetail(symbol);
+            fetchCoinNews(symbol);
+        }
+        window.onload = loadCoinDetails;
+    </script>
+</body>
+</html>
