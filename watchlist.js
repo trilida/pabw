@@ -1,55 +1,47 @@
 document.addEventListener("DOMContentLoaded", function () {
+  fetchData();
   loadWatchlist();
 
   function loadWatchlist() {
-    let selectedCoins = localStorage.getItem("selectedCoins")
-      ? JSON.parse(localStorage.getItem("selectedCoins"))
-      : {};
-    let watchlistData = document.getElementById("watchlistData");
-    watchlistData.innerHTML = `
-      <h2>Your Watchlist</h2>
-      <table>
-        <tr>
-          <th>Name</th>
-          <th>Symbol</th>
-          <th>Price 1h</th>
-          <th>Price 2h</th>
-          <th>Price 1d</th>
-          <th>Actions</th>
-        </tr>`;
+    let selectedCoins = JSON.parse(
+      localStorage.getItem("selectedCoins") || "{}"
+    );
+    let portfolioTableBody = document.getElementById("portfolioTableBody");
+    portfolioTableBody.innerHTML = ""; // Clear all content in tbody
 
     Object.keys(selectedCoins).forEach((symbol) => {
       let coin = selectedCoins[symbol];
-      let name = coin.name;
-      let price1h = coin.price1h;
-      let price2h = coin.price2h;
-      let price1d = coin.price1d;
-      watchlistData.innerHTML += `
-        <tr>
-          <td>${name}</td>
+      let row = document.createElement("tr");
+      row.innerHTML = `
+          <td>${coin.name}</td>
           <td>${symbol}</td>
-          <td>${price1h}</td>
-          <td>${price2h}</td>
-          <td>${price1d}</td>
+          <td>${coin.price.toLocaleString("id-ID", {
+            style: "currency",
+            currency: "IDR",
+          })}</td>
+          <td>${coin.price1h}</td>
+          <td>${coin.price2h}</td>
           <td>
-            <button onclick="window.location.href='detailcoin.html?symbol=${symbol}&name=${name}'">Detail</button>
-            <button onclick="removeFromWatchlist('${symbol}')" class="delete-btn">Delete</button>
+              <button onclick="window.location.href='detailcoin.html?symbol=${symbol}&name=${
+        coin.name
+      }'" class="detail-btn">Detail</button>
+              <button onclick="removeFromWatchlist('${symbol}')" class="delete-btn">Delete</button>
           </td>
-        </tr>`;
+      `;
+      portfolioTableBody.appendChild(row);
     });
-
-    watchlistData.innerHTML += `</table>`;
   }
 
   window.removeFromWatchlist = function (symbol) {
-    let selectedCoins = localStorage.getItem("selectedCoins")
-      ? JSON.parse(localStorage.getItem("selectedCoins"))
-      : {};
+    let selectedCoins = JSON.parse(
+      localStorage.getItem("selectedCoins") || "{}"
+    );
     delete selectedCoins[symbol];
     localStorage.setItem("selectedCoins", JSON.stringify(selectedCoins));
     loadWatchlist(); // Refresh the watchlist display
   };
 });
+
 const url =
   "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest";
 const parameters = { start: "1", limit: "100", convert: "IDR" };
@@ -59,7 +51,6 @@ const headers = new Headers({
 });
 const qs = new URLSearchParams(parameters);
 const requestUrl = `${url}?${qs.toString()}`;
-let selectedCoins = JSON.parse(localStorage.getItem("selectedCoins")) || {}; // Menyimpan koin yang di-checklist
 
 function fetchData() {
   fetch(requestUrl, { method: "GET", headers: headers })
@@ -69,22 +60,24 @@ function fetchData() {
       return response.json();
     })
     .then((data) => {
-      data.data.forEach((koin) => {
-        if (selectedCoins[koin.symbol]) {
-          selectedCoins[koin.symbol] = {
-            name: koin.name,
-            price1h: koin.quote.IDR.percent_change_1h.toFixed(2) + " %",
-            price2h: koin.quote.IDR.percent_change_24h.toFixed(2) + " %",
-            price1d: koin.quote.IDR.percent_change_24h.toFixed(2) + " %",
+      let selectedCoins = JSON.parse(
+        localStorage.getItem("selectedCoins") || "{}"
+      );
+      data.data.forEach((coin) => {
+        if (selectedCoins[coin.symbol]) {
+          selectedCoins[coin.symbol] = {
+            ...selectedCoins[coin.symbol],
+            name: coin.name,
+            price: coin.quote.IDR.price,
+            price1h: coin.quote.IDR.percent_change_1h.toFixed(2) + " %",
+            price2h: coin.quote.IDR.percent_change_24h.toFixed(2) + " %",
           };
         }
       });
       localStorage.setItem("selectedCoins", JSON.stringify(selectedCoins));
-      updateDOM(data);
+      loadWatchlist();
     })
     .catch((error) => {
       console.error("Fetch error:", error);
     });
 }
-
-fetchData();

@@ -7,11 +7,24 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Hamburger Menu Start -->
+    <nav class="hamburger-menu">
+        <div id="menuToggle">
+            <input type="checkbox" />
+            <span></span>
+            <span></span>
+            <span></span>
+            <ul id="menu">
+                <li><a href="portofolio.html">My Portofolio</a></li>
+                <li><a href="watchlist.html">Watchlist</a></li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Hamburger Menu End -->
+
     <h1>Cryptocurrency Market Data</h1>
     <div id="addContainer">
         <input type="text" id="searchInput" placeholder="Type to search by name or symbol..." />
-        <button id="goToWatchlistButton" onclick="goToWatchlist()">Go to Watchlist</button>
-        <button onclick="window.location.href='portofolio.html'">Go to Portfolio</button>
     </div>
     <div id="cryptoData">Loading cryptocurrency data...</div>
     
