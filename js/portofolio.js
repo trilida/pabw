@@ -50,28 +50,25 @@ document.addEventListener("DOMContentLoaded", () => {
     )}`;
   }
 
-function addCryptoToTable(coin, name, amount) {
-  const row = document.createElement("tr");
-  row.innerHTML = `
-        <td>${coin.cmc_rank}</td>
-        <td>${coin.name}</td>
-        <td>${coin.symbol}</td>
-        <td>Rp ${coin.quote.IDR.price.toLocaleString("id-ID")}</td>
-        <td>
-            <button onclick="updateAmount('${name}', -1)">-</button>
-            ${amount}
-            <button onclick="updateAmount('${name}', 1)">+</button>
-        </td>
-        <td>Rp ${(coin.quote.IDR.price * amount).toLocaleString("id-ID")}</td>
-        <td>${coin.quote.IDR.market_cap.toLocaleString("id-ID")}</td>
-        <td>${coin.quote.IDR.percent_change_1h.toFixed(2)}%</td>
-        <td>${coin.quote.IDR.percent_change_24h.toFixed(2)}%</td>
-        <td>${coin.quote.IDR.percent_change_7d.toFixed(2)}%</td>
-        <td><button onclick="deleteCoin('${name}')" class="delete-btn">Delete</button></td>
-    `;
-  portfolioTableBody.appendChild(row);
-}
-
+  function addCryptoToTable(coin, name, amount) {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+          <td>${coin.cmc_rank}</td>
+          <td>${coin.name}</td>
+          <td>${coin.symbol}</td>
+          <td>Rp ${coin.quote.IDR.price.toLocaleString("id-ID")}</td>
+          <td>
+              <button onclick="updateAmount('${name}', -1)">-</button>
+              ${amount}
+              <button onclick="updateAmount('${name}', 1)">+</button>
+          </td>
+          <td>Rp ${(coin.quote.IDR.price * amount).toLocaleString("id-ID")}</td>
+          <td>${coin.quote.IDR.market_cap.toLocaleString("id-ID")}</td>
+          <td><input type="checkbox" class="monitor-checkbox" data-symbol="${coin.symbol}"></td>
+          <td><button onclick="deleteCoin('${name}')" class="delete-btn">Delete</button></td>
+      `;
+    portfolioTableBody.appendChild(row);
+  }
 
   window.updateAmount = function (name, change) {
     const coinIndex = portfolio.findIndex(
@@ -116,14 +113,28 @@ function addCryptoToTable(coin, name, amount) {
     displayPortfolio();
   };
 
-window.deleteCoin = function (name) {
-  const updatedPortfolio = portfolio.filter(
-    (c) => c.name.toUpperCase() !== name.toUpperCase()
-  );
-  portfolio = updatedPortfolio;
-  localStorage.setItem("portfolio", JSON.stringify(portfolio));
-  displayPortfolio();
-};
+  window.deleteCoin = function (name) {
+    const updatedPortfolio = portfolio.filter(
+      (c) => c.name.toUpperCase() !== name.toUpperCase()
+    );
+    portfolio = updatedPortfolio;
+    localStorage.setItem("portfolio", JSON.stringify(portfolio));
+    displayPortfolio();
+  };
+
+  window.monitorSelectedCoins = function () {
+    const selectedSymbols = [];
+    const checkboxes = document.querySelectorAll('.monitor-checkbox:checked');
+    checkboxes.forEach(checkbox => {
+      selectedSymbols.push(checkbox.dataset.symbol);
+    });
+    if (selectedSymbols.length > 6) {
+      alert('You can select up to 6 coins only.');
+    } else {
+      localStorage.setItem('monitorSymbols', JSON.stringify(selectedSymbols));
+      window.location.href = 'monitor.html';
+    }
+  };
 
   fetchData();
 });

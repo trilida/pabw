@@ -15,31 +15,32 @@
             <button type="button" onclick="addCoin()">Add to Portfolio</button>
         </form>
     </div>
-    <table>
-        <thead>
-            <tr>
-                <th>Rank</th>
-                <th>Name</th>
-                <th>Symbol</th>
-                <th>Price (IDR)</th>
-                <th>Amount Owned</th>
-                <th>Total Value (IDR)</th>
-                <th>Market Cap (IDR)</th>
-                <th>Change 1h (%)</th>
-                <th>Change 24h (%)</th>
-                <th>Change 7d (%)</th>
-                <th>Actions</th> <!-- Header for delete button column -->
-            </tr>
-        </thead>
-        <tbody id="portfolioTableBody">
-            <!-- Portfolio items will be added here dynamically -->
-        </tbody>
-    </table>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Name</th>
+                    <th>Symbol</th>
+                    <th>Price (IDR)</th>
+                    <th>Amount Owned</th>
+                    <th>Total Value (IDR)</th>
+                    <th>Market Cap (IDR)</th>
+                    <th>Actions</th>
+                    <th>selected</th>
+
+                </tr>
+            </thead>
+            <tbody id="portfolioTableBody">
+                <!-- Data will be dynamically inserted here by JavaScript -->
+            </tbody>
+        </table>
+    </div>
     <div class="total-value-display">
         <h3>Total Portfolio Value:</h3>
         <p id="totalAmountIDR">Rp 0</p>
     </div>
-     <button onclick="window.location.href='monitor.html'">Monitor Portfolio</button>
+    <button onclick="window.location.href='monitor.html'">Monitor Portfolio</button>
     <script src="portofolio.js"></script>
 </body>
 </html>
