@@ -7,30 +7,55 @@ document.addEventListener("DOMContentLoaded", function () {
       localStorage.getItem("selectedCoins") || "{}"
     );
     let portfolioTableBody = document.getElementById("portfolioTableBody");
-    portfolioTableBody.innerHTML = ""; // Clear all content in tbody
+    portfolioTableBody.innerHTML = "";
 
     Object.keys(selectedCoins).forEach((symbol) => {
       let coin = selectedCoins[symbol];
       let row = document.createElement("tr");
       row.innerHTML = `
-          <td>${coin.name}</td>
-          <td>${symbol}</td>
-          <td>${coin.price.toLocaleString("id-ID", {
-            style: "currency",
-            currency: "IDR",
-          })}</td>
-          <td>${coin.price1h}</td>
-          <td>${coin.price2h}</td>
-          <td>
-              <button onclick="window.location.href='detailcoin.html?symbol=${symbol}&name=${
-        coin.name
-      }'" class="detail-btn">Detail</button>
-              <button onclick="removeFromWatchlist('${symbol}')" class="delete-btn">Delete</button>
-          </td>
-      `;
+                <td>${coin.name}</td>
+                <td>${symbol}</td>
+                <td>${coin.price.toLocaleString("id-ID", {
+                  style: "currency",
+                  currency: "IDR",
+                })}</td>
+                <td>${coin.price1h}</td>
+                <td>${coin.price2h}</td>
+                <td>
+                    <div class="tradingview-widget-container">
+                        <div class="tradingview-widget-container__widget"></div>
+                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                        {
+                            "symbol": "BINANCE:${symbol}USDT",
+                            "width": "100%",
+                            "height": "100%",
+                            "locale": "en",
+                            "dateRange": "1D",
+                            "colorTheme": "light",
+                            "trendLineColor": "rgba(152, 0, 255, 1)",
+                            "underLineColor": "rgba(152, 0, 255, 1)",
+                            "underLineBottomColor": "rgba(0, 255, 255, 0)",
+                            "isTransparent": false,
+                            "autosize": true,
+                            "largeChartUrl": "",
+                            "chartOnly": false,
+                            "noTimeScale": false
+                        }
+                        </script>
+                    </div>
+                </td>
+                <td>
+                    <button class="btn btn-info btn-sm" onclick="viewDetail('${symbol}')">Detail</button>
+                    <button class="btn btn-danger btn-sm" onclick="removeFromWatchlist('${symbol}')">Delete</button>
+                </td>
+            `;
       portfolioTableBody.appendChild(row);
     });
   }
+
+  window.viewDetail = function (symbol) {
+    alert(`View details for ${symbol}`);
+  };
 
   window.removeFromWatchlist = function (symbol) {
     let selectedCoins = JSON.parse(
@@ -38,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
     );
     delete selectedCoins[symbol];
     localStorage.setItem("selectedCoins", JSON.stringify(selectedCoins));
-    loadWatchlist(); // Refresh the watchlist display
+    loadWatchlist();
   };
 });
 

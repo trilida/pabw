@@ -4,66 +4,140 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cryptocurrency Market Data</title>
-    <link rel="stylesheet" href="css/style.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Hamburger Menu Start -->
-    <nav class="hamburger-menu">
-        <div id="menuToggle">
-            <input type="checkbox" />
-            <span></span>
-            <span></span>
-            <span></span>
-            <ul id="menu">
-                <li><a href="portofolio.html">My Portofolio</a></li>
-                <li><a href="watchlist.html">Watchlist</a></li>
+    <nav id="navbarbg" class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <a class="navbar-brand" href="#">Crypto Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="portofolio.html">My Portofolio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="watchlist.html">Watchlist</a>
+                </li>
             </ul>
         </div>
     </nav>
-    <!-- Hamburger Menu End -->
 
-    <h1>Cryptocurrency Market Data</h1>
-    <div id="addContainer">
-        <input type="text" id="searchInput" placeholder="Type to search by name or symbol..." />
-    </div>
-    <div id="cryptoData">Loading cryptocurrency data...</div>
+    <div class="container mt-5 pt-4">
+        <h1 class="text-center">Cryptocurrency Market Data</h1>
+        <div id="addContainer" class="my-4">
+            <input type="text" id="searchInput" class="form-control" placeholder="Type to search by name or symbol..." />
+        </div>
         
-    <!-- TradingView Widget BEGIN -->
-    <div id="ticker" class="tradingview-widget-container">
-    <div class="tradingview-widget-container__widget"></div>
-    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-    {
-    "symbols"; [
-        {
-        "proName": "FOREXCOM:SPXUSD",
-        "title": "S&P 500 Index"
-        },
-        {
-        "proName": "FOREXCOM:NSXUSD",
-        "title": "US 100 Cash CFD"
-        },
-        {
-        "proName": "FX_IDC:EURUSD",
-        "title": "EUR to USD"
-        },
-        {
-        "proName": "BITSTAMP:BTCUSD",
-        "title": "Bitcoin"
-        },
-        {
-        "proName": "BITSTAMP:ETHUSD",
-        "title": "Ethereum"
-        }
-    ],
-    "showSymbolLogo"; true,
-    "isTransparent"; false,
-    "displayMode"; "adaptive",
-    "colorTheme"; "dark",
-    "locale"; "en"
-    }
-    </script>
+        <div class="d-flex justify-content-between mb-4">
+            <div>
+                <label for="rowsPerPage">Tampilkan baris:</label>
+                <select id="rowsPerPage" class="form-control d-inline-block w-auto" onchange="updateRowsPerPage()">
+                    <option value="100">100</option>
+                    <option value="50">50</option>
+                    <option value="20">20</option>
+                </select>
+            </div>
+            <button class="btn btn-secondary" data-toggle="modal" data-target="#filterModal">Filter</button>
+        </div>
+        
+        <div id="cryptoData" class="table-responsive">
+            Loading cryptocurrency data...
+        </div>
+        
+        <!-- TradingView Widget BEGIN -->
+        <div id="ticker" class="tradingview-widget-container mt-4">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+            {
+                "symbols" [
+                    {
+                        "proName": "FOREXCOM:SPXUSD",
+                        "title": "S&P 500 Index"
+                    },
+                    {
+                        "proName": "FOREXCOM:NSXUSD",
+                        "title": "US 100 Cash CFD"
+                    },
+                    {
+                        "proName": "FX_IDC:EURUSD",
+                        "title": "EUR to USD"
+                    },
+                    {
+                        "proName": "BITSTAMP:BTCUSD",
+                        "title": "Bitcoin"
+                    },
+                    {
+                        "proName": "BITSTAMP:ETHUSD",
+                        "title": "Ethereum"
+                    }
+                ],
+                "showSymbolLogo"; true,
+                "isTransparent"; false,
+                "displayMode"; "adaptive",
+                "colorTheme"; "dark",
+                "locale"; "en"
+            }
+            </script>
+        </div>
+        <!-- TradingView Widget END -->
+
+        <!-- Filter Modal -->
+        <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="filterModalLabel">Filter Options</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Filter options go here -->
+                        <div class="form-group">
+                            <label for="filterMarketCap">Market Cap</label>
+                            <select id="filterMarketCap" class="form-control">
+                                <option value="">All</option>
+                                <option value="large">Large Cap</option>
+                                <option value="medium">Medium Cap</option>
+                                <option value="small">Small Cap</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="filterVolume">Volume</label>
+                            <select id="filterVolume" class="form-control">
+                                <option value="">All</option>
+                                <option value="high">High Volume</option>
+                                <option value="medium">Medium Volume</option>
+                                <option value="low">Low Volume</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="filterCategory">Category</label>
+                            <select id="filterCategory" class="form-control">
+                                <option value="">All</option>
+                                <option value="coin">Coin</option>
+                                <option value="token">Token</option>
+                            </select>
+                        </div>
+                        <!-- Add more filters as needed -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-<!-- TradingView Widget END -->
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html>

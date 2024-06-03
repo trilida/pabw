@@ -1,0 +1,70 @@
+/* Custom navbar styling */
+.custom-navbar {
+    background-color: #403434; /* Ganti dengan warna background yang kamu inginkan */
+}
+
+.custom-navbar .navbar-brand,
+.custom-navbar .nav-link {
+    color: #ffffff; /* Ganti dengan warna teks yang kamu inginkan */
+}
+
+.custom-navbar .navbar-brand:hover,
+.custom-navbar .nav-link:hover {
+    color: #c13c3c; /* Ganti dengan warna teks saat di-hover yang kamu inginkan */
+}
+
+.custom-navbar .navbar-toggler {
+    border-color: #ffffff; /* Ganti dengan warna border hamburger menu yang kamu inginkan */
+}
+
+.custom-navbar .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    /* Ganti dengan warna icon hamburger menu yang kamu inginkan */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    padding-top: 70px; /* Adjusted for fixed navbar */
+}
+
+.navbar {
+    margin-bottom: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#searchInput {
+    width: 100%; /* Full width for responsiveness */
+    padding: 15px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.table-container {
+    padding: 0 20px;
+}
+
+.table th, .table td {
+    text-align: center; /* Center text in table */
+}
+
+.table th {
+    background-color: #993c3c; /* Ganti dengan warna background header tabel yang kamu inginkan */
+    color: #ffffff; /* Ganti dengan warna teks header tabel yang kamu inginkan */
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #faa0a0;
+}
+
+#ticker {
+    position: fixed;  
+    bottom: 0;  
+    left: 0;     
+    width: 100%;      
+}
