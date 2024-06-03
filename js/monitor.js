@@ -6,6 +6,7 @@ function loadTradingViewWidgets() {
   const savedSymbols = JSON.parse(
     localStorage.getItem("monitorSymbols") || "[]"
   );
+  console.log("Loaded symbols: ", savedSymbols);
   if (savedSymbols.length === 0) {
     console.log("No symbols selected for monitoring.");
     return; // Do nothing if no symbols are saved

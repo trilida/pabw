@@ -1,9 +1,10 @@
 const url =
   "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest";
-const parameters = { 
-  start: "1", 
-  limit: "100", 
-  convert: "IDR" };
+const parameters = {
+  start: "1",
+  limit: "100",
+  convert: "IDR",
+};
 const headers = new Headers({
   Accept: "application/json",
   "X-CMC_PRO_API_KEY": "58320ee3-e22e-4bfb-83e1-10a3828a3feb",
@@ -32,18 +33,21 @@ function updateDOM(koin) {
   const displayDiv = document.getElementById("cryptoData");
   let tableHTML = `<table>
     <tr>
+      <th>Selected</th>
       <th>Name</th>
       <th>Symbol</th>
       <th>Price (IDR)</th>
       <th>Volume (IDR)</th>
       <th>1h (%)</th>
       <th>24h (%)</th>
-      <th>Watchlist</th>
     </tr>`;
 
   koin.data.forEach((koin) => {
     const isChecked = selectedCoins[koin.symbol] ? "checked" : "";
-    tableHTML += `<tr>
+    tableHTML += `<tr>      
+      <td><input type="checkbox" class="watchlist-checkbox" data-symbol="${
+        koin.symbol
+      }" data-name="${koin.name}" ${isChecked}></td>
       <td>${koin.name}</td>
       <td>${koin.symbol}</td>
       <td>${koin.quote.IDR.price.toLocaleString("id-ID", {
@@ -56,9 +60,6 @@ function updateDOM(koin) {
       })}</td>
       <td>${koin.quote.IDR.percent_change_1h.toFixed(2)} %</td>
       <td>${koin.quote.IDR.percent_change_24h.toFixed(2)} %</td>
-      <td><input type="checkbox" class="watchlist-checkbox" data-symbol="${
-        koin.symbol
-      }" data-name="${koin.name}" ${isChecked}></td>
     </tr>`;
   });
 

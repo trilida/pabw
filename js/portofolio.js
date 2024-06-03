@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const portfolioTableBody = document.getElementById("portfolioTableBody");
   const totalAmountIDR = document.getElementById("totalAmountIDR");
 
-  // Fetch cryptocurrency data from CoinMarketCap
   function fetchData() {
     const apiUrl =
       "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest";
@@ -29,7 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
       .catch((error) => console.error("Error fetching coin data:", error));
   }
 
-  // Display portfolio in the table
   function displayPortfolio() {
     portfolioTableBody.innerHTML = "";
     let totalPortfolioValue = 0;
@@ -51,7 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
     loadCheckboxState(); // Load the checkbox state after displaying portfolio
   }
 
-  // Add cryptocurrency row to the table
   function addCryptoToTable(coin, name, amount) {
     const row = document.createElement("tr");
     row.innerHTML = `
@@ -74,7 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
     portfolioTableBody.appendChild(row);
   }
 
-  // Update amount of cryptocurrency owned
   window.updateAmount = function (name, change) {
     const coinIndex = portfolio.findIndex(
       (c) => c.name.toUpperCase() === name.toUpperCase()
@@ -82,14 +78,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (coinIndex !== -1) {
       portfolio[coinIndex].amount += change;
       if (portfolio[coinIndex].amount <= 0) {
-        portfolio.splice(coinIndex, 1); // Remove the coin if the amount is zero or less
+        portfolio.splice(coinIndex, 1);
       }
       localStorage.setItem("portfolio", JSON.stringify(portfolio));
       displayPortfolio();
     }
   };
 
-  // Add new coin to the portfolio
   window.addCoin = function () {
     const coinNameInput = document.getElementById("coinNameInput");
     const coinAmountInput = document.getElementById("coinAmountInput");
@@ -119,17 +114,14 @@ document.addEventListener("DOMContentLoaded", () => {
     displayPortfolio();
   };
 
-  // Delete coin from the portfolio
   window.deleteCoin = function (name) {
-    const updatedPortfolio = portfolio.filter(
+    portfolio = portfolio.filter(
       (c) => c.name.toUpperCase() !== name.toUpperCase()
     );
-    portfolio = updatedPortfolio;
-    localStorage.setItem("portfolio", JSON.stringify(updatedPortfolio));
+    localStorage.setItem("portfolio", JSON.stringify(portfolio));
     displayPortfolio();
   };
 
-  // Save checkbox state to localStorage
   function saveCheckboxState() {
     const checkboxes = document.querySelectorAll(".monitor-checkbox");
     const checkboxState = {};
@@ -139,32 +131,30 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("checkboxState", JSON.stringify(checkboxState));
   }
 
-  // Load checkbox state from localStorage
   function loadCheckboxState() {
     const checkboxState =
       JSON.parse(localStorage.getItem("checkboxState")) || {};
     const checkboxes = document.querySelectorAll(".monitor-checkbox");
     checkboxes.forEach((checkbox) => {
       checkbox.checked = checkboxState[checkbox.dataset.symbol] || false;
-      checkbox.addEventListener("change", saveCheckboxState); // Save state on change
+      checkbox.addEventListener("change", saveCheckboxState);
     });
   }
 
-  // Monitor selected coins
   window.monitorSelectedCoins = function () {
     const selectedSymbols = [];
     const checkboxes = document.querySelectorAll(".monitor-checkbox:checked");
     checkboxes.forEach((checkbox) => {
       selectedSymbols.push({
         description: "",
-        proName: checkbox.dataset.symbol + "USD", // Menyesuaikan dengan format simbol di TradingView
+        proName: checkbox.dataset.symbol + "USD",
       });
     });
     if (selectedSymbols.length < 4 || selectedSymbols.length > 12) {
       alert("You can select between 4 and 12 coins only.");
     } else {
       localStorage.setItem("monitorSymbols", JSON.stringify(selectedSymbols));
-      window.location.href = "monitor.html"; // Navigate to monitor page
+      window.location.href = "monitor.html";
     }
   };
 
