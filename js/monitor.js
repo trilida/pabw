@@ -1,23 +1,31 @@
-function loadTradingViewWidget(symbols) {
-  const chartsContainer = document.getElementById("charts");
-  chartsContainer.innerHTML = ""; // Clear existing charts
+document.addEventListener("DOMContentLoaded", function () {
+  loadTradingViewWidgets();
+});
 
-  symbols.forEach((symbol, index) => {
-    const container = document.createElement("div");
-    container.className = "tradingview-widget-container";
-    container.id = `chart-container-${index}`;
+function loadTradingViewWidgets() {
+  const savedSymbols = JSON.parse(
+    localStorage.getItem("monitorSymbols") || "[]"
+  );
+  if (savedSymbols.length === 0) {
+    console.log("No symbols selected for monitoring.");
+    return; // Do nothing if no symbols are saved
+  }
 
-    const widget = document.createElement("div");
-    widget.className = "tradingview-widget-container__widget";
-    container.appendChild(widget);
+  const container = document.getElementById("tradingview-widgets");
+  container.innerHTML = ""; // Clear any existing widgets
 
-    const scriptElement = document.createElement("script");
-    scriptElement.type = "text/javascript";
-    scriptElement.async = true;
-    scriptElement.src =
+  savedSymbols.forEach((symbol) => {
+    const widgetDiv = document.createElement("div");
+    widgetDiv.className = "tradingview-widget-container";
+    widgetDiv.style.width = "100%"; // Adjust width per your layout needs
+    widgetDiv.style.height = "500px"; // Set a reasonable height for each widget
+
+    const script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src =
       "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
-
-    const config = {
+    script.async = true;
+    script.innerHTML = JSON.stringify({
       autosize: true,
       symbol: symbol.proName,
       interval: "D",
@@ -27,11 +35,8 @@ function loadTradingViewWidget(symbols) {
       locale: "en",
       allow_symbol_change: true,
       calendar: false,
-      support_host: "https://www.tradingview.com",
-    };
-
-    scriptElement.innerHTML = JSON.stringify(config);
-    widget.appendChild(scriptElement);
-    chartsContainer.appendChild(container);
+    });
+    widgetDiv.appendChild(script);
+    container.appendChild(widgetDiv);
   });
 }

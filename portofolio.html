@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Cryptocurrency Portfolio</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <h1>Manage Your Cryptocurrency Portfolio</h1>
@@ -27,8 +27,7 @@
                     <th>Total Value (IDR)</th>
                     <th>Market Cap (IDR)</th>
                     <th>Actions</th>
-                    <th>selected</th>
-
+                    <th>Selected</th>
                 </tr>
             </thead>
             <tbody id="portfolioTableBody">
@@ -40,7 +39,7 @@
         <h3>Total Portfolio Value:</h3>
         <p id="totalAmountIDR">Rp 0</p>
     </div>
-    <button onclick="window.location.href='monitor.html'">Monitor Portfolio</button>
-    <script src="portofolio.js"></script>
+    <button onclick="monitorSelectedCoins()">Monitor Portfolio</button>
+    <script src="js/portofolio.js"></script>
 </body>
 </html>

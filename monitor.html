@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor</title>
+</head>
+<body>
+    <div id="tradingview-widgets" style="display: flex; flex-wrap: wrap; justify-content: space-around;">
+        <!-- Widgets will be dynamically inserted here -->
+    </div>
+    <script>
+function loadTradingViewWidgets() {
+  const savedSymbols = JSON.parse(localStorage.getItem('monitorSymbols') || '[]');
+  if (savedSymbols.length === 0) {
+    return; // Do nothing if no symbols are saved
+  }
+
+  const container = document.querySelector('.tradingview-widget-container');
+  container.innerHTML = ''; // Clear any existing widgets
+
+  savedSymbols.forEach(symbol => {
+    const widgetDiv = document.createElement("div");
+    widgetDiv.className = "tradingview-widget-container__widget";
+    widgetDiv.style.height = "calc(50% - 16px)";  // Adjust height to fit 4 in the view
+    widgetDiv.style.width = "50%";
+
+    const scriptElement = document.createElement("script");
+    scriptElement.type = "text/javascript";
+    scriptElement.src = "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
+    const config = {
+      "autosize": true,
+      "symbol": symbol.proName,
+      "interval": "D",
+      "timezone": "Etc/UTC",
+      "theme": "dark",
+      "style": "1",
+      "locale": "en",
+      "allow_symbol_change": true,
+      "calendar": false,
+      "support_host": "https://www.tradingview.com"
+    };
+    scriptElement.innerHTML = JSON.stringify(config);
+    widgetDiv.appendChild(scriptElement);
+    container.appendChild(widgetDiv);
+  });
+}
+
+window.onload = loadTradingViewWidgets;
+</script>
+
+</body>
+</html>
