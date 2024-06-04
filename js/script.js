@@ -81,10 +81,15 @@ function updateDOM(coins) {
 
   coins.forEach((coin) => {
     const isChecked = selectedCoins[coin.symbol] ? "checked" : "";
+    const logoUrl = `https://s2.coinmarketcap.com/static/img/coins/64x64/${coin.id}.png`; // URL gambar logo
+
     tableHTML += `<tr>
       <td>${coin.cmc_rank}</td>
       <td>${coin.name}</td>
-      <td>${coin.symbol}</td>
+      <td>
+        <img src="${logoUrl}" alt="${coin.symbol}" width="30" height="30">
+        ${coin.symbol}
+      </td>
       <td>${coin.quote.IDR.price.toLocaleString("id-ID", {
         style: "currency",
         currency: "IDR",

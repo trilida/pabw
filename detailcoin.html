@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <nav id="navbarbg" class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <a class="navbar-brand" href="index.html">Crypto Dashboard</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -28,6 +28,7 @@
     <div class="container">
         <h1 id="coinName" class="mt-5">Coin Name</h1>
         <div id="coinSymbol" class="mb-3">Symbol: XYZ</div>
+        <img id="coinLogo" src="" alt="Coin Logo" class="mb-3" style="width: 64px; height: 64px;">
         <div id="coinPrice" class="mb-3">Price (IDR): Loading...</div>
         <div id="coinVolume" class="mb-3">Volume (IDR): Loading...</div>
 
@@ -35,7 +36,10 @@
         <div id="chartContainer" class="mb-3" style="height:400px; width:100%">
         </div>
 
-        <div id="coinNews" class="mb-3">Latest News</div>
+        <div id="coinNews" class="container mt-4">
+            <h2>Latest News</h2>
+            <!-- News items will be dynamically inserted here -->
+        </div>
     </div>
     
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

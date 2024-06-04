@@ -1,6 +1,6 @@
 /* Custom navbar styling */
-.custom-navbar {
-    background-color: #403434; /* Ganti dengan warna background yang kamu inginkan */
+#navbar {
+    background-color: rgb(224, 75, 99)!important; /* Ganti dengan warna background yang kamu inginkan */
 }
 
 .custom-navbar .navbar-brand,
@@ -14,7 +14,7 @@
 }
 
 .custom-navbar .navbar-toggler {
-    border-color: #ffffff; /* Ganti dengan warna border hamburger menu yang kamu inginkan */
+    border-color: #5c1717; /* Ganti dengan warna border hamburger menu yang kamu inginkan */
 }
 
 .custom-navbar .navbar-toggler-icon {
@@ -50,24 +50,110 @@ h1 {
 }
 
 .table th, .table td {
+
     text-align: center; /* Center text in table */
 }
 
-.table th {
-    background-color: #993c3c; /* Ganti dengan warna background header tabel yang kamu inginkan */
-    color: #ffffff; /* Ganti dengan warna teks header tabel yang kamu inginkan */
+th {
+    background-color: rgb(224, 75, 99) !important; /* Ubah warna background header tabel menjadi pink */
+    color: #000000 ; /* Ganti dengan warna teks header tabel yang kamu inginkan */
+    outline: none;
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
-    background-color: #faa0a0;
+    background-color: #fae6e6; /* Warna abu-abu muda untuk baris ganjil */
 }
 
-#button{
-     background-color: #faa0a0;
+.table-striped tbody tr:nth-of-type(even) {
+    background-color: #ffffff; /* Warna putih untuk baris genap */
 }
+
+/* Styling for buttons */
+#button {
+    background-color: #faa0a0; /* Background color */
+    color: #ffffff; /* Text color */
+    border: none; /* Remove border */
+    padding: 8px 10px; /* Padding */
+    text-align: center; /* Center text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Inline-block for button-like appearance */
+    font-size: 16px; /* Font size */
+    margin: 4px 2px; /* Margin */
+    cursor: pointer; /* Pointer cursor on hover */
+    border-radius: 4px; /* Rounded corners */
+    transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+#button:hover {
+    background-color: #e18e8e; /* Background color on hover */
+}
+
+#button:active {
+    background-color: #c87c7c; /* Background color on active */
+}
+
+#button:focus {
+    outline: none; /* Remove outline */
+    box-shadow: 0 0 0 2px rgba(250, 160, 160, 0.5); /* Add focus ring */
+}
+
 #ticker {
     position: fixed;  
     bottom: 0;  
     left: 0;     
     width: 100%;      
+}
+
+/* CSS untuk memperkecil lebar dropdown currencyPair */
+#currencyPair {
+    width: auto; /* Ubah lebar menjadi otomatis */
+    max-width: 200px; /* Atur lebar maksimal sesuai kebutuhan */
+    left: 100px;
+}
+/* Custom styling for news section */
+#coinNews {
+    margin-top: 20px;
+}
+
+#coinNews h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+
+.news-item {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd; /* Garis tipis di bawah setiap berita */
+    padding-bottom: 20px;
+}
+
+.news-image {
+    width: 150px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.news-content {
+    flex: 1;
+}
+
+.news-category {
+    color: #007bff;
+    font-weight: bold;
+}
+
+.news-date {
+    color: #6c757d;
+    font-size: 14px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.news-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
 }

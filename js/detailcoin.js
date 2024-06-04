@@ -10,8 +10,10 @@ async function fetchCoinDetail(symbol) {
     });
     const data = await response.json();
     if (data.data && data.data[symbol]) {
-      updateModal(data.data[symbol]);
-      return data.data[symbol];
+      const coinData = data.data[symbol];
+      const logoUrl = `https://s2.coinmarketcap.com/static/img/coins/64x64/${coinData.id}.png`; // URL gambar logo
+      updateModal(coinData, logoUrl);
+      return coinData;
     }
   } catch (error) {
     console.error("Error fetching coin details: ", error);
@@ -20,7 +22,7 @@ async function fetchCoinDetail(symbol) {
 }
 
 async function fetchCoinNews(symbol) {
-  const apiUrl = `https://cryptonews-api.com/api/v1?tickers=${symbol}&items=3&page=1&token=ljukmboyqryrusrqn9vfvv4rbcayrrsz65a7einn`;
+  const apiUrl = `https://cryptonews-api.com/api/v1?tickers=${symbol}&items=3&page=1&token=4ltz4hv77kgbrdpqzkrnf4otstrxlnrqresew2da`;
   try {
     const response = await fetch(apiUrl, {
       method: "GET",
@@ -38,33 +40,34 @@ async function fetchCoinNews(symbol) {
   }
 }
 
-function updateModal(data) {
+function updateModal(data, logoUrl) {
   document.getElementById("coinName").innerText = data.name;
   document.getElementById("coinSymbol").innerText = "Symbol: " + data.symbol;
-  document.getElementById(
-    "coinPrice"
-  ).innerText = `Price (IDR): ${data.quote.IDR.price.toLocaleString("id-ID", {
-    style: "currency",
-    currency: "IDR",
-  })}`;
-  document.getElementById(
-    "coinVolume"
-  ).innerText = `Volume (IDR): ${data.quote.IDR.volume_24h.toLocaleString(
-    "id-ID",
-    { style: "currency", currency: "IDR" }
-  )}`;
+  document.getElementById("coinLogo").src = logoUrl; // Set the source of the logo image
+  document.getElementById("coinPrice").innerText = `Price (IDR): ${data.quote.IDR.price.toLocaleString("id-ID", {style: "currency",currency: "IDR",})}`;
+  document.getElementById("coinVolume").innerText = `Volume (IDR): ${data.quote.IDR.volume_24h.toLocaleString("id-ID", { style: "currency", currency: "IDR" })}`;
   updateChart(data.symbol); // Update chart with the correct symbol
 }
 
 function updateNewsModal(newsData) {
   const newsContainer = document.getElementById("coinNews");
-  let newsHTML = "<h2>Latest News</h2>";
+  let newsHTML = "";
   newsData.forEach((news) => {
     newsHTML += `
-      <div>
-        <h3>${news.title}</h3>
-        <p>${news.description}</p>
-        <a href="${news.url}" target="_blank">Read more</a>
+      <div class="news-item d-flex mb-4">
+        <img src="${news.image_url}" alt="${
+      news.title
+    }" class="news-image mr-3" style="width: 150px; height: 100px; object-fit: cover;">
+        <div class="news-content">
+          <span class="news-category">${news.source_name}</span>
+          <span class="news-date">${new Date(news.date).toLocaleString(
+            "id-ID",
+            { dateStyle: "full", timeStyle: "short" }
+          )}</span>
+          <h3 class="news-title">${news.title}</h3>
+          <p>${news.text}</p>
+          <a href="${news.news_url}" target="_blank">Read more</a>
+        </div>
       </div>
     `;
   });

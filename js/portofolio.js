@@ -50,23 +50,26 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function addCryptoToTable(coin, name, amount) {
+    const logoUrl = `https://s2.coinmarketcap.com/static/img/coins/64x64/${coin.id}.png`; // URL gambar logo
     const row = document.createElement("tr");
     row.innerHTML = `
-      <td>${coin.cmc_rank}</td>
       <td>${coin.name}</td>
-      <td>${coin.symbol}</td>
+      <td>
+        <img src="${logoUrl}" alt="${coin.symbol}" width="32" height="32">
+        ${coin.symbol}
+      </td>
       <td>Rp ${coin.quote.IDR.price.toLocaleString("id-ID")}</td>
       <td>
-        <button onclick="updateAmount('${name}', -1)">-</button>
+        <button id="button" onclick="updateAmount('${name}', -1)">-</button>
         ${amount}
-        <button onclick="updateAmount('${name}', 1)">+</button>
+        <button id="button" onclick="updateAmount('${name}', 1)">+</button>
       </td>
       <td>Rp ${(coin.quote.IDR.price * amount).toLocaleString("id-ID")}</td>
       <td>${coin.quote.IDR.market_cap.toLocaleString("id-ID")}</td>
       <td><input type="checkbox" class="monitor-checkbox" data-symbol="${
         coin.symbol
       }"></td>
-      <td><button onclick="deleteCoin('${name}')" class="delete-btn">Delete</button></td>
+      <td><button id="button" onclick="deleteCoin('${name}')" class="delete-btn">Delete</button></td>
     `;
     portfolioTableBody.appendChild(row);
   }
