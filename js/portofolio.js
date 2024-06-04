@@ -150,8 +150,8 @@ document.addEventListener("DOMContentLoaded", () => {
         proName: checkbox.dataset.symbol + "USD",
       });
     });
-    if (selectedSymbols.length < 4 || selectedSymbols.length > 12) {
-      alert("You can select between 4 and 12 coins only.");
+    if (selectedSymbols.length < 2 || selectedSymbols.length > 12) {
+      alert("You can select between 2 and 12 coins only.");
     } else {
       localStorage.setItem("monitorSymbols", JSON.stringify(selectedSymbols));
       window.location.href = "monitor.html";

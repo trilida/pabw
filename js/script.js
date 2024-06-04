@@ -3,7 +3,7 @@ const url =
 const infoUrl = "https://pro-api.coinmarketcap.com/v2/cryptocurrency/info";
 const parameters = {
   start: "1",
-  limit: "100", // Default limit
+  limit: "500", // Default limit
   convert: "IDR",
 };
 const headers = new Headers({
@@ -108,7 +108,13 @@ function updateDOM(coins) {
   checkboxes.forEach((checkbox) => {
     checkbox.addEventListener("change", function () {
       if (this.checked) {
-        selectedCoins[this.dataset.symbol] = this.dataset.name;
+        selectedCoins[this.dataset.symbol] = {
+          name: this.dataset.name,
+          symbol: this.dataset.symbol,
+          price: 0, // Placeholder value, will be updated on fetch
+          price1h: "0 %",
+          price2h: "0 %",
+        };
       } else {
         delete selectedCoins[this.dataset.symbol];
       }
@@ -131,9 +137,8 @@ function searchCrypto() {
 
   fetch(requestUrl, { method: "GET", headers: headers })
     .then((response) => {
-      if (!response.ok) {
+      if (!response.ok)
         throw new Error(`HTTP error! Status: ${response.status}`);
-      }
       return response.json();
     })
     .then((data) => {

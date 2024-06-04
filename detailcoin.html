@@ -4,26 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Coin</title>
+    <!-- Link to Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h1 id="coinName">Coin Name</h1>
-    <div id="coinSymbol">Symbol: XYZ</div>
-    <div id="priceChart" class="chart-container"></div>
-    <div id="coinNews">Latest News</div>
+    <div class="container">
+        <h1 id="coinName" class="mt-5">Coin Name</h1>
+        <div id="coinSymbol" class="mb-3">Symbol: XYZ</div>
+        <div id="coinPrice" class="mb-3">Price (IDR): Loading...</div>
+        <div id="coinVolume" class="mb-3">Volume (IDR): Loading...</div>
+
+        <div id="chartContainer" class="mb-3" style="height:400px; width:100%"></div>
+
+        <div id="coinNews" class="mb-3">Latest News</div>
+    </div>
     
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="js/detailcoin.js"></script>
-    <script>
-        function loadCoinDetails() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const symbol = urlParams.get('symbol');
-            const name = urlParams.get('name');
-            document.getElementById('coinName').innerText = name;
-            document.getElementById('coinSymbol').innerText = 'Symbol: ' + symbol;
-            fetchCoinDetail(symbol);
-            fetchCoinNews(symbol);
-        }
-        window.onload = loadCoinDetails;
-    </script>
 </body>
 </html>

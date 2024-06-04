@@ -62,6 +62,9 @@ h1 {
     background-color: #faa0a0;
 }
 
+#button{
+     background-color: #faa0a0;
+}
 #ticker {
     position: fixed;  
     bottom: 0;  
