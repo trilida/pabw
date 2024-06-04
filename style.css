@@ -1,13 +1,19 @@
 /* Custom navbar styling */
 #navbar {
-    background-color: rgb(224, 75, 99)!important; /* Ganti dengan warna background yang kamu inginkan */
+    background-color: #d62c2c!important; /* Ganti dengan warna background yang kamu inginkan */
+    
 }
 
-.custom-navbar .navbar-brand,
-.custom-navbar .nav-link {
-    color: #ffffff; /* Ganti dengan warna teks yang kamu inginkan */
+.custom-navbar .custom-navbar .nav-link {
+    color: #ffffff !important; /* Ganti dengan warna teks yang kamu inginkan */
 }
-
+.nav-link{
+    color: #ffffff !important; 
+}
+.navbar-brand{
+    color: #ffffff !important; 
+    padding: 0 100px;
+}
 .custom-navbar .navbar-brand:hover,
 .custom-navbar .nav-link:hover {
     color: #c13c3c; /* Ganti dengan warna teks saat di-hover yang kamu inginkan */
@@ -55,9 +61,9 @@ h1 {
 }
 
 th {
-    background-color: rgb(224, 75, 99) !important; /* Ubah warna background header tabel menjadi pink */
-    color: #000000 ; /* Ganti dengan warna teks header tabel yang kamu inginkan */
-    outline: none;
+    background-color: #d62c2c !important; /* Ubah warna background header tabel menjadi pink */
+    color: #ffffff ; /* Ganti dengan warna teks header tabel yang kamu inginkan */
+    outline: none !important;
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
@@ -70,7 +76,7 @@ th {
 
 /* Styling for buttons */
 #button {
-    background-color: #faa0a0; /* Background color */
+    background-color: #d62c2c; /* Background color */
     color: #ffffff; /* Text color */
     border: none; /* Remove border */
     padding: 8px 10px; /* Padding */
