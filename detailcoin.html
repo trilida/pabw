@@ -6,16 +6,34 @@
     <title>Detail Coin</title>
     <!-- Link to Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <nav id="navbarbg" class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <a class="navbar-brand" href="index.html">Crypto Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="portofolio.html">My Portofolio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="watchlist.html">Watchlist</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
     <div class="container">
         <h1 id="coinName" class="mt-5">Coin Name</h1>
         <div id="coinSymbol" class="mb-3">Symbol: XYZ</div>
         <div id="coinPrice" class="mb-3">Price (IDR): Loading...</div>
         <div id="coinVolume" class="mb-3">Volume (IDR): Loading...</div>
 
-        <div id="chartContainer" class="mb-3" style="height:400px; width:100%"></div>
+        <!-- TradingView Widget Container -->
+        <div id="chartContainer" class="mb-3" style="height:400px; width:100%">
+        </div>
 
         <div id="coinNews" class="mb-3">Latest News</div>
     </div>

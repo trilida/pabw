@@ -1,5 +1,5 @@
 async function fetchCoinDetail(symbol) {
-  const apiUrl = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=${symbol}`;
+  const apiUrl = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=${symbol}&convert=IDR`;
   try {
     const response = await fetch(apiUrl, {
       method: "GET",
@@ -43,10 +43,17 @@ function updateModal(data) {
   document.getElementById("coinSymbol").innerText = "Symbol: " + data.symbol;
   document.getElementById(
     "coinPrice"
-  ).innerText = `Price (IDR): ${data.quote.IDR.price}`;
+  ).innerText = `Price (IDR): ${data.quote.IDR.price.toLocaleString("id-ID", {
+    style: "currency",
+    currency: "IDR",
+  })}`;
   document.getElementById(
     "coinVolume"
-  ).innerText = `Volume (IDR): ${data.quote.IDR.volume_24h}`;
+  ).innerText = `Volume (IDR): ${data.quote.IDR.volume_24h.toLocaleString(
+    "id-ID",
+    { style: "currency", currency: "IDR" }
+  )}`;
+  updateChart(data.symbol); // Update chart with the correct symbol
 }
 
 function updateNewsModal(newsData) {
@@ -71,42 +78,33 @@ function loadCoinDetails() {
   document.getElementById("coinName").innerText = name;
   document.getElementById("coinSymbol").innerText = "Symbol: " + symbol;
 
-  fetchCoinDetail(symbol).then((data) => {
-    if (data) {
-      updateChart(symbol);
-    }
-  });
-
+  fetchCoinDetail(symbol);
   fetchCoinNews(symbol);
+  updateChart(symbol);
 }
 
 function updateChart(symbol) {
   const chartContainer = document.getElementById("chartContainer");
+  chartContainer.innerHTML = ""; // Clear previous content
 
-  const chartWidget = document.createElement("div");
-  chartWidget.className = "tradingview-widget-container__widget";
-  chartContainer.appendChild(chartWidget);
-
-  const chartScript = document.createElement("script");
-  chartScript.type = "text/javascript";
-  chartScript.async = true;
-  chartScript.src =
+  const script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src =
     "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
-  chartScript.innerHTML = `
-  {
-    "autosize": true,
-    "symbol": "BINANCE:${symbol}",
-    "interval": "D",
-    "timezone": "Etc/UTC",
-    "theme": "dark",
-    "style": "1",
-    "locale": "en",
-    "allow_symbol_change": true,
-    "calendar": false,
-    "support_host": "https://www.tradingview.com"
-  }`;
-
-  chartContainer.appendChild(chartScript);
+  script.async = true;
+  script.innerHTML = JSON.stringify({
+    autosize: true,
+    symbol: `BINANCE:${symbol}USDT`,
+    interval: "D",
+    timezone: "Etc/UTC",
+    theme: "light",
+    style: "1",
+    locale: "en",
+    allow_symbol_change: true,
+    calendar: false,
+    container_id: "chartContainer",
+  });
+  chartContainer.appendChild(script);
 }
 
 window.onload = loadCoinDetails;
