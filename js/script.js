@@ -1,9 +1,8 @@
 const url =
   "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest";
-const infoUrl = "https://pro-api.coinmarketcap.com/v2/cryptocurrency/info";
 const parameters = {
   start: "1",
-  limit: "500", // Default limit
+  limit: "500",
   convert: "IDR",
 };
 const headers = new Headers({
@@ -11,7 +10,7 @@ const headers = new Headers({
   "X-CMC_PRO_API_KEY": "58320ee3-e22e-4bfb-83e1-10a3828a3feb",
 });
 
-let selectedCoins = JSON.parse(localStorage.getItem("selectedCoins")) || {}; // Menyimpan koin yang di-checklist
+let selectedCoins = JSON.parse(localStorage.getItem("selectedCoins")) || {};
 
 function fetchData() {
   const qs = new URLSearchParams(parameters);
@@ -23,42 +22,11 @@ function fetchData() {
         throw new Error(`HTTP error! Status: ${response.status}`);
       return response.json();
     })
-    .then((data) => {
-      if (document.getElementById("filterCategory").value) {
-        applyCategoryFilter(data.data);
-      } else {
-        updateDOM(data.data);
-      }
+    .then((crypto) => {
+      updateDOM(crypto.data);
     })
     .catch((error) => {
       console.error("Fetch error:", error);
-    });
-}
-
-function applyCategoryFilter(coins) {
-  const category = document.getElementById("filterCategory").value;
-  const symbols = coins.map((coin) => coin.symbol).join(",");
-
-  fetch(
-    `https://pro-api.coinmarketcap.com/v2/cryptocurrency/info?symbol=${symbols}`,
-    {
-      method: "GET",
-      headers: headers,
-    }
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      const filteredCoins = coins.filter((coin) => {
-        const coinData = data.data[coin.symbol];
-        return (
-          (category === "coin" && coinData.category === "coin") ||
-          (category === "token" && coinData.category === "token")
-        );
-      });
-      updateDOM(filteredCoins);
-    })
-    .catch((error) => {
-      console.error("Error fetching coin categories:", error);
     });
 }
 
@@ -81,7 +49,7 @@ function updateDOM(coins) {
 
   coins.forEach((coin) => {
     const isChecked = selectedCoins[coin.symbol] ? "checked" : "";
-    const logoUrl = `https://s2.coinmarketcap.com/static/img/coins/64x64/${coin.id}.png`; // URL gambar logo
+    const logoUrl = `https://s2.coinmarketcap.com/static/img/coins/64x64/${coin.id}.png`; //ini buat nampilin logo sesuai id nya 
 
     tableHTML += `<tr>
       <td>${coin.cmc_rank}</td>
@@ -146,36 +114,17 @@ function searchCrypto() {
         throw new Error(`HTTP error! Status: ${response.status}`);
       return response.json();
     })
-    .then((data) => {
-      const filteredCoins = data.data.filter(
-        (koin) =>
-          koin.symbol.includes(searchText) ||
-          koin.name.toUpperCase().includes(searchText)
+    .then((crypto) => {
+      const filteredCoins = crypto.data.filter(
+        (coin) =>
+          coin.symbol.includes(searchText) ||
+          coin.name.toUpperCase().includes(searchText)
       );
       updateDOM(filteredCoins);
     })
     .catch((error) => {
       console.error("Fetch error:", error);
     });
-}
-
-function updateRowsPerPage() {
-  const rowsPerPage = document.getElementById("rowsPerPage").value;
-  parameters.limit = rowsPerPage;
-  fetchData();
-}
-
-function applyFilters() {
-  // Apply filters based on user selection
-  const marketCapFilter = document.getElementById("filterMarketCap").value;
-  const volumeFilter = document.getElementById("filterVolume").value;
-  const categoryFilter = document.getElementById("filterCategory").value;
-
-  // Add your filtering logic here
-  // For simplicity, we assume fetching data again with applied filters
-  // You might want to add more logic to filter the fetched data on the client side
-
-  fetchData(); // Fetch data again with applied filters
 }
 
 fetchData();

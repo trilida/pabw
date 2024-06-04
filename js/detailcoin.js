@@ -1,4 +1,4 @@
-async function fetchCoinDetail(symbol) { //ini buat ngambil data price sama volume sesuai dengan data yang dari cryptomarketcap yang dipilih 
+async function fetchCoinDetail(symbol) {
   const apiUrl = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=${symbol}&convert=IDR`;
   try {
     const response = await fetch(apiUrl, {
@@ -8,10 +8,10 @@ async function fetchCoinDetail(symbol) { //ini buat ngambil data price sama volu
         "X-CMC_PRO_API_KEY": "58320ee3-e22e-4bfb-83e1-10a3828a3feb",
       },
     });
-    const crypto = await response.json();
-    if (crypto.data && crypto.data[symbol]) {
-      const coinData = crypto.data[symbol];
-      const logoUrl = `https://s2.coinmarketcap.com/static/img/coins/64x64/${coinData.id}.png`; // URL gambar logo dari coinmarketcap
+    const coin = await response.json();
+    if (coin.data && coin.data[symbol]) {
+      const coinData = coin.data[symbol];
+      const logoUrl = `https://s2.coinmarketcap.com/static/img/coins/64x64/${coinData.id}.png`; // URL gambar logo
       updateModal(coinData, logoUrl);
       return coinData;
     }
@@ -21,7 +21,7 @@ async function fetchCoinDetail(symbol) { //ini buat ngambil data price sama volu
   return null;
 }
 
-async function fetchCoinNews(symbol) { //ini untuk ngambil data news dari cryptonews
+async function fetchCoinNews(symbol) { //ngambil data dari cryptonews
   const apiUrl = `https://cryptonews-api.com/api/v1?tickers=${symbol}&items=3&page=1&token=4ltz4hv77kgbrdpqzkrnf4otstrxlnrqresew2da`;
   try {
     const response = await fetch(apiUrl, {
@@ -31,8 +31,8 @@ async function fetchCoinNews(symbol) { //ini untuk ngambil data news dari crypto
       },
     });
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-    const news = await response.json();
-    if (news.data) updateNewsModal(news.data);
+    const coin = await response.json();
+    if (coin.data) updateNewsModal(coin.data);
     else throw new Error("No news found for this coin.");
   } catch (error) {
     console.error("Error fetching coin news: ", error);
@@ -55,9 +55,7 @@ function updateNewsModal(newsData) {
   newsData.forEach((news) => {
     newsHTML += `
       <div class="news-item d-flex mb-4">
-        <img src="${news.image_url}" alt="${
-      news.title
-    }" class="news-image mr-3" style="width: 150px; height: 100px; object-fit: cover;">
+        <img src="${news.image_url}" alt="${news.title}" class="news-image mr-3" style="width: 150px; height: 100px; object-fit: cover;">
         <div class="news-content">
           <span class="news-category">${news.source_name}</span>
           <span class="news-date">${new Date(news.date).toLocaleString(
@@ -74,16 +72,28 @@ function updateNewsModal(newsData) {
   newsContainer.innerHTML = newsHTML;
 }
 
-function updateChart(symbol) { //ini function buat nampilin chart
+function loadCoinDetails() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const symbol = urlParams.get("symbol");
+  const name = urlParams.get("name");
+  document.getElementById("coinName").innerText = name;
+  document.getElementById("coinSymbol").innerText = "Symbol: " + symbol;
+
+  fetchCoinDetail(symbol);
+  fetchCoinNews(symbol);
+  updateChart(symbol);
+}
+
+function updateChart(symbol) {
   const chartContainer = document.getElementById("chartContainer");
   chartContainer.innerHTML = ""; // Clear previous content
 
-  const chart = document.createElement("script");
-  chart.type = "text/javascript";
-  chart.src =
+  const script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src =
     "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
-  chart.async = true;
-  chart.innerHTML = JSON.stringify({
+  script.async = true;
+  script.innerHTML = JSON.stringify({
     autosize: true,
     symbol: `BINANCE:${symbol}USDT`,
     interval: "D",
@@ -95,19 +105,7 @@ function updateChart(symbol) { //ini function buat nampilin chart
     calendar: false,
     container_id: "chartContainer",
   });
-  chartContainer.appendChild(chart);
-}
-
-function loadCoinDetails() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const symbol = urlParams.get("symbol");
-  const name = urlParams.get("name");
-  document.getElementById("coinName").innerText = name;
-  document.getElementById("coinSymbol").innerText = "Symbol: " + symbol;
-
-  fetchCoinDetail(symbol);
-  fetchCoinNews(symbol);
-  updateChart(symbol);
+  chartContainer.appendChild(script);
 }
 
 window.onload = loadCoinDetails;

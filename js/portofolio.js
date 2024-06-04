@@ -1,9 +1,12 @@
+// Menetapkan listener yang akan dieksekusi setelah konten DOM sepenuhnya dimuat
 document.addEventListener("DOMContentLoaded", () => {
+  // Menginisialisasi array dan objek dari data penyimpanan lokal untuk menyimpan coins dan portfolio
   let coins = [];
   let portfolio = JSON.parse(localStorage.getItem("portfolio")) || [];
   const portfolioTableBody = document.getElementById("portfolioTableBody");
   const totalAmountIDR = document.getElementById("totalAmountIDR");
 
+  // Fungsi untuk mengambil data cryptocurrency dari API CoinMarketCap
   function fetchData() {
     const apiUrl =
       "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest";
@@ -23,34 +26,14 @@ document.addEventListener("DOMContentLoaded", () => {
         if (data.status.error_code !== 0)
           throw new Error(data.status.error_message);
         coins = data.data;
-        displayPortfolio();
+        displayPortfolio(); // Memperbarui UI dengan data baru
       })
       .catch((error) => console.error("Error fetching coin data:", error));
   }
 
-  function displayPortfolio() {
-    portfolioTableBody.innerHTML = "";
-    let totalPortfolioValue = 0;
-
-    portfolio.forEach((item) => {
-      const coin = coins.find(
-        (c) => c.symbol.toUpperCase() === item.name.toUpperCase()
-      );
-      if (coin && coin.quote && coin.quote.IDR) {
-        const coinValue = item.amount * coin.quote.IDR.price;
-        totalPortfolioValue += coinValue;
-        addCryptoToTable(coin, item.name, item.amount);
-      }
-    });
-
-    totalAmountIDR.textContent = `Rp ${totalPortfolioValue.toLocaleString(
-      "id-ID"
-    )}`;
-    loadCheckboxState(); // Load the checkbox state after displaying portfolio
-  }
-
+  // Fungsi untuk menambahkan informasi koin ke tabel HTML
   function addCryptoToTable(coin, name, amount) {
-    const logoUrl = `https://s2.coinmarketcap.com/static/img/coins/64x64/${coin.id}.png`; // URL gambar logo
+    const logoUrl = `https://s2.coinmarketcap.com/static/img/coins/64x64/${coin.id}.png`;
     const row = document.createElement("tr");
     row.innerHTML = `
       <td>${coin.name}</td>
@@ -71,23 +54,31 @@ document.addEventListener("DOMContentLoaded", () => {
       }"></td>
       <td><button id="button" onclick="deleteCoin('${name}')" class="delete-btn">Delete</button></td>
     `;
-    portfolioTableBody.appendChild(row);
+    portfolioTableBody.appendChild(row); // Menambahkan baris ke badan tabel
   }
 
-  window.updateAmount = function (name, change) {
-    const coinIndex = portfolio.findIndex(
-      (c) => c.name.toUpperCase() === name.toUpperCase()
-    );
-    if (coinIndex !== -1) {
-      portfolio[coinIndex].amount += change;
-      if (portfolio[coinIndex].amount <= 0) {
-        portfolio.splice(coinIndex, 1);
-      }
-      localStorage.setItem("portfolio", JSON.stringify(portfolio));
-      displayPortfolio();
-    }
-  };
+  // Fungsi untuk menampilkan dan mengelola portfolio di tabel HTML
+  function displayPortfolio() {
+    portfolioTableBody.innerHTML = "";
+    let totalPortfolioValue = 0;
 
+    portfolio.forEach((item) => {
+      const coin = coins.find(
+        (c) => c.symbol.toUpperCase() === item.name.toUpperCase()
+      );
+      if (coin && coin.quote && coin.quote.IDR) {
+        const coinValue = item.amount * coin.quote.IDR.price;
+        totalPortfolioValue += coinValue;
+        addCryptoToTable(coin, item.name, item.amount); // Menambahkan baris baru ke tabel untuk setiap koin
+      }
+    });
+
+    totalAmountIDR.textContent = `Rp ${totalPortfolioValue.toLocaleString(
+      "id-ID"
+    )}`;
+    loadCheckboxState(); // Memuat status checkbox berdasarkan penyimpanan lokal
+  }
+  // Fungsi untuk menambahkan koin baru ke portfolio
   window.addCoin = function () {
     const coinNameInput = document.getElementById("coinNameInput");
     const coinAmountInput = document.getElementById("coinAmountInput");
@@ -117,14 +108,22 @@ document.addEventListener("DOMContentLoaded", () => {
     displayPortfolio();
   };
 
-  window.deleteCoin = function (name) {
-    portfolio = portfolio.filter(
-      (c) => c.name.toUpperCase() !== name.toUpperCase()
+  // Fungsi yang dipanggil ketika tombol '+' atau '-' ditekan untuk mengupdate jumlah koin
+  window.updateAmount = function (name, change) {
+    const coinIndex = portfolio.findIndex(
+      (c) => c.name.toUpperCase() === name.toUpperCase()
     );
-    localStorage.setItem("portfolio", JSON.stringify(portfolio));
-    displayPortfolio();
+    if (coinIndex !== -1) {
+      portfolio[coinIndex].amount += change;
+      if (portfolio[coinIndex].amount <= 0) {
+        portfolio.splice(coinIndex, 1); // Hapus koin dari array jika jumlahnya nol atau kurang
+      }
+      localStorage.setItem("portfolio", JSON.stringify(portfolio));
+      displayPortfolio(); // Perbarui tampilan tabel
+    }
   };
 
+  // Fungsi untuk menyimpan status checkbox ke penyimpanan lokal
   function saveCheckboxState() {
     const checkboxes = document.querySelectorAll(".monitor-checkbox");
     const checkboxState = {};
@@ -134,6 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("checkboxState", JSON.stringify(checkboxState));
   }
 
+  // Fungsi untuk memuat status checkbox dari penyimpanan lokal
   function loadCheckboxState() {
     const checkboxState =
       JSON.parse(localStorage.getItem("checkboxState")) || {};
@@ -144,6 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Fungsi untuk memonitor koin yang dipilih
   window.monitorSelectedCoins = function () {
     const selectedSymbols = [];
     const checkboxes = document.querySelectorAll(".monitor-checkbox:checked");
@@ -160,6 +161,14 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.href = "monitor.html";
     }
   };
+  // Fungsi untuk menghapus koin dari portfolio
+  window.deleteCoin = function (name) {
+    portfolio = portfolio.filter(
+      (c) => c.name.toUpperCase() !== name.toUpperCase()
+    );
+    localStorage.setItem("portfolio", JSON.stringify(portfolio));
+    displayPortfolio();
+  };
 
-  fetchData();
+  fetchData(); // Memanggil fungsi untuk memuat data saat pertama kali halaman dimuat
 });

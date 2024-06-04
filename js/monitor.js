@@ -13,7 +13,7 @@ function loadTradingViewWidgets() {
   }
 
   const container = document.getElementById("tradingview-widgets");
-  container.innerHTML = ""; // Clear any existing widgets
+  container.innerHTML = ""; //ngebersihin container
 
   savedSymbols.forEach((symbol) => {
     const widgetDiv = document.createElement("div");
